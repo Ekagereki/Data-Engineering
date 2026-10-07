@@ -24,16 +24,17 @@ TEMPLATE_PPTX = "program_highlights.pptx"
 
 # Excel sheet name (= pptx file name) -> pillar title shown on the slide
 PILLARS = {
-    "lag": "LEGAL AID AND GOVERNANCE",
-    "mhpss": "MENTAL HEALTH and PSYCHOSOCIAL SUPPORT",
-    "wge": "WOMEN & GIRLS",
-    "psj": "PEACE AND SOCIAL JUSTICE",
+    # the below are just placeholders. Customize it 
+    "xxx": "Tripple X",
+    "yyy": "Tripple Y",
+    "zzz": "Tripple Z",
+    "aaa": "Tripple A",
 }
 
 # Optional: replace an auto-generated label with a short one.
 #   key = start of the auto label (case-insensitive), value = label to use
 LABEL_OVERRIDES = {
-    # "# of DPHCs who receive legal aid": "# of DPHCs who receive legal aid and counselling",
+    # "# of ______": "# of ______,
 }
 
 MAX_LABEL_CHARS = 28             # axis labels of COLUMN charts are cut to this (bar charts wrap)
@@ -87,18 +88,18 @@ def parse_achievement(text):
     if not text:
         return None, 0, 0
 
-    segments = []                                        # text where the figures live
+    segments = []                                        
     total = re.search(r"Total[^\d\n]{0,15}?(" + NUM + ")", text, flags=re.I)
-    if total:                                            # 'Total - 342(183M, 100F ...'
+    if total:                                            
         number = to_num(total.group(1))
         segments = [text[total.start():].split("\n")[0]]
     else:
         quarters = re.findall(r"Q\d\s*[-–—:]\s*(" + NUM + ")", text)
-        if quarters:                                     # sum of Q1 + Q2 ...
+        if quarters:                                    
             number = sum(to_num(q) for q in quarters)
             segments = [ln for ln in text.split("\n") if re.match(r"\s*Q\d", ln)]
         else:
-            lead = re.match(r"\s*(" + NUM + ")", text)   # '92 .' / '181 (111 female ...'
+            lead = re.match(r"\s*(" + NUM + ")", text)   
             if not lead:
                 return None, 0, 0
             number = to_num(lead.group(1))
@@ -117,7 +118,7 @@ def parse_achievement(text):
 
 def shorten(label):
     label = re.sub(r"\s+", " ", label).strip(" .:;-")
-    label = re.sub(r"^#\s*\d[\d,]*\s+", "# ", label)      # '# 7500 of x' -> '# of x'
+    label = re.sub(r"^#\s*\d[\d,]*\s+", "# ", label)      
     for start, new in LABEL_OVERRIDES.items():
         if label.lower().startswith(start.lower()):
             return new
@@ -320,9 +321,6 @@ def load_review(path):
     return result
 
 
-# =========================================================================== #
-# 3. BUILDING THE DECK
-# =========================================================================== #
 def _style_font(font, size, bold=False, color=None):
     font.size = Pt(size)
     font.bold = bold
