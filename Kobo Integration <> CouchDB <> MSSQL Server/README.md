@@ -489,16 +489,3 @@ Potential extensions include:
 **Status:** Active development
 
 This repository is intended as a practical data engineering implementation demonstrating API-based extraction, document-oriented storage, incremental synchronization, and relational database integration.
-
-## License
-
-Add the appropriate license for your project here.
-
-For example:
-
-```text
-MIT License
-```
-
-if the project is intended to be released under the MIT License.
-
